@@ -1,9 +1,10 @@
-import mongoose, { InferSchemaType, model } from "mongoose";
+import { InferSchemaType, model } from "mongoose";
 import { Schema } from "mongoose";
 
 const userSchema = new Schema({
-    name: String,
-    age: Number
+    username: String,
+    discordId: String,
+    balance: Number,
 })
 
 type User = InferSchemaType<typeof userSchema>
