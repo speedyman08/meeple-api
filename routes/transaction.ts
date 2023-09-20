@@ -5,7 +5,7 @@ import {v4} from 'uuid'
 export const transactionRoutes = Router();
 
 transactionRoutes.post('/createtransaction', (req:Request,res:Response)=>{
-    if(req.body.senderId && req.body.receiverId && req.body.moneySent) {
+    if(req.body.senderId && req.body.receiverId && typeof req.body.moneySent !== "undefined") {
         const time = Date.now()
         const transactionId = v4();
         const transaction = new transactionModel({
