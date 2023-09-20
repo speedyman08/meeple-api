@@ -3,10 +3,10 @@ import { Schema } from "mongoose";
 
 const transactionSchema = new Schema({
     transactionId: String,
-    senderId: Number,
-    receiverId: Number,
+    senderId: String,
+    receiverId: String,
     time: Number,
-    moneySent: Number,
+    moneySent: String,
 })
 
 type Transaction = InferSchemaType<typeof transactionSchema>

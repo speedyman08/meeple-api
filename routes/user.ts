@@ -32,7 +32,7 @@ userRoutes.get('/user/:discordId', async (req:Request,res:Response)=>{
 })
 
 userRoutes.put('/user/:discordId/balance', async(req:Request,res:Response)=>{
-    if (req.params.discordId && req.body.balance){
+    if (req.params.discordId && typeof req.body.balance !== 'undefined'){
         const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {balance: req.body.balance})
         if (!user){
             res.status(404).send({success:false, message:"Could not find discordId"});
