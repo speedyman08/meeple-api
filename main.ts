@@ -40,9 +40,13 @@ app.get('/users', async (req:Request, res:Response) => {
 app.get('/user', async (req:Request,res:Response)=>{
     if (req.body.name) {
         const user = await userModel.find({name:req.body.name})
+        if (!user){
+            await res.status(404).send({success:false, message:"Could not find user"});
+            return;
+        }
         await res.status(200).send(user).end();
     } else {
-        await res.status(404).send({success:false, message:"Could not find user"}).end();
+        await res.status(400).send({success:false, message:"Bad syntax, are you missing name?"}).end();
     }
 })
 
@@ -56,7 +60,7 @@ app.delete('/deleteuser', async(req:Request, res:Response)=>{
 
     await res.status(200).send({success: true, message:"User deleted"})
     } else {
-        await res.status(400).send({success:false, message:"Bad syntax"})
+        await res.status(400).send({success:false, message:"Bad syntax, are you missing name?"}).end();
     }
 })
 
