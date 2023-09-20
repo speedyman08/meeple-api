@@ -27,11 +27,20 @@ transactionRoutes.get('/transactions',async (req:Request,res:Response)=>{
     const transactions = await transactionModel.find({})
     res.status(200).send(transactions)
 })
-transactionRoutes.get('/transactions/:senderId', async(req:Request,res:Response)=>{
+transactionRoutes.get('/transactions/senderId/:senderId', async(req:Request,res:Response)=>{
     if(req.params.senderId) {
         const userTransactions = await transactionModel.find({senderId:req.params.senderId})
         res.status(200).send(userTransactions)
     } else {
         res.status(400).send({success:false,message:"Missing senderId"})
+    }
+})
+
+transactionRoutes.get('/transactions/receiverId/:receiverId', async(req:Request,res:Response)=>{
+    if(req.params.receiverId) {
+        const userTransactions = await transactionModel.find({receiverId:req.params.receiverId})
+        res.status(200).send(userTransactions)
+    } else {
+        res.status(400).send({success:false,message:"Missing receiverId"})
     }
 })
