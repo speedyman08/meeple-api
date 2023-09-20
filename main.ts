@@ -39,7 +39,7 @@ app.get('/users', async (req:Request, res:Response) => {
 
 app.get('/user', async (req:Request,res:Response)=>{
     if (req.body.name) {
-        const user = await userModel.find({name:req.body.name})
+        const user = await userModel.findOne({name:req.body.name})
         if (!user){
             await res.status(404).send({success:false, message:"Could not find user"});
             return;
