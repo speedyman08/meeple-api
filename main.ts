@@ -4,10 +4,10 @@ import { userModel } from "./user";
 mongoose.connect('mongodb://localhost/database').then(()=>{
     console.log("DB connected")
 })
-//TODO: structure all of this
+
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 app.use((err: any, req: Request, res: Response, next: any) => {
     if (err.type === 'entity.parse.failed') {
@@ -35,6 +35,15 @@ if (req.body.name && req.body.age) {
 app.get('/users', async (req:Request, res:Response) => {
     const users = await userModel.find({})
     await res.status(200).send(users).end();
+})
+
+app.get('/user', async (req:Request,res:Response)=>{
+    if (req.body.name) {
+        const user = await userModel.find({name:req.body.name})
+        await res.status(200).send(user).end();
+    } else {
+        await res.status(404).send({success:false, message:"Could not find user"}).end();
+    }
 })
 
 app.delete('/deleteuser', async(req:Request, res:Response)=>{
