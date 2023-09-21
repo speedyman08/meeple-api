@@ -5,6 +5,7 @@ const userSchema = new Schema({
     username: String,
     discordId: String,
     balance: Number,
+    lastWorkTime: String,
 })
 
 type User = InferSchemaType<typeof userSchema>
