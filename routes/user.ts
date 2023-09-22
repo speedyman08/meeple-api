@@ -94,3 +94,16 @@ userRoutes.get('/user/:discordId/job', async(req:Request,res:Response)=>{
     }
     
 })
+userRoutes.get('/user/:discordId/exists', async(req:Request,res:Response)=>{
+    if(req.params.discordId) {
+        const user = await userModel.findOne({discordId:req.params.discordId})
+        if (!user) {
+            res.status(200).send({exists:false})
+            return;
+        } else {
+            res.status(200).send({exists:true})
+        }
+    } else {
+        res.status(400).send({success:false,message:"Missing discordId"})
+    }
+})
