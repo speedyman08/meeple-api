@@ -5,7 +5,7 @@ export const userRoutes = Router();
 
 userRoutes.post('/createuser',(req:Request,res:Response )=> {
     if (req.body.username && req.body.discordId) {
-        const user = new userModel({username: req.body.username, discordId: req.body.discordId, balance: 500, lastWorkTime: 0})
+        const user = new userModel({username: req.body.username, discordId: req.body.discordId, balance: 500, lastWorkTime: 0, applied: false, whitelisted: false})
         user.save();
         res.send({success: true, message: "User created"}).end()
     } else {
@@ -105,5 +105,31 @@ userRoutes.get('/user/:discordId/exists', async(req:Request,res:Response)=>{
         }
     } else {
         res.status(400).send({success:false,message:"Missing discordId"})
+    }
+})
+userRoutes.put('/user/:discordId/whitelist', async (req:Request, res:Response)=> {
+    if(req.params.discordId) {
+        const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {applied: true})
+        if (!user) {
+            res.status(404).send({success:false,message:"User not found"})
+        }
+        res.status(200).send({success: true, message: "User applied"})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId"})
+    }
+})
+userRoutes.get('/appliedUsers', async (req:Request, res:Response) => {
+    const users = await userModel.find({applied: true, whitelisted:false})
+    res.status(200).send(users)
+})
+userRoutes.put('/user/:discordId/accept', async (req:Request, res:Response)=> {
+    if(req.params.discordId) {
+        const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {whitelisted: true})
+        if (!user) {
+            res.status(404).send({success:false,message:"User not found"})
+        }
+        res.status(200).send({success: true, message: "User whitelisted"})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId"})
     }
 })
