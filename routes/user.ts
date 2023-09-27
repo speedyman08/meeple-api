@@ -107,7 +107,7 @@ userRoutes.get('/user/:discordId/exists', async(req:Request,res:Response)=>{
         res.status(400).send({success:false,message:"Missing discordId"})
     }
 })
-userRoutes.put('/user/:discordId/whitelist', async (req:Request, res:Response)=> {
+userRoutes.get('/user/:discordId/whitelist', async (req:Request, res:Response)=> {
     if(req.params.discordId) {
         const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {applied: true})
         if (!user) {
@@ -122,7 +122,7 @@ userRoutes.get('/appliedUsers', async (req:Request, res:Response) => {
     const users = await userModel.find({applied: true, whitelisted:false})
     res.status(200).send(users)
 })
-userRoutes.put('/user/:discordId/accept', async (req:Request, res:Response)=> {
+userRoutes.get('/user/:discordId/accept', async (req:Request, res:Response)=> {
     if(req.params.discordId) {
         const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {whitelisted: true})
         if (!user) {
