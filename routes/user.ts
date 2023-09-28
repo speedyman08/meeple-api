@@ -5,7 +5,14 @@ export const userRoutes = Router();
 
 userRoutes.post('/createuser',(req:Request,res:Response )=> {
     if (req.body.username && req.body.discordId) {
-        const user = new userModel({username: req.body.username, discordId: req.body.discordId, balance: 500, lastWorkTime: 0, applied: false, whitelisted: false})
+        const user = new userModel({username: req.body.username, 
+            discordId: req.body.discordId, 
+            balance: 500, 
+            lastWorkTime: 0, 
+            applied: false, 
+            whitelisted: false,
+            astroneerUsername: ""
+        })
         user.save();
         res.send({success: true, message: "User created"}).end()
     } else {
@@ -129,6 +136,28 @@ userRoutes.get('/user/:discordId/accept', async (req:Request, res:Response)=> {
             res.status(404).send({success:false,message:"User not found"})
         }
         res.status(200).send({success: true, message: "User whitelisted"})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId"})
+    }
+})
+userRoutes.put('/user/:discordId/astroneerusername', async (req:Request,res:Response) => {
+    if(req.params.discordId && req.body.astroneerUsername) {
+        const user = await userModel.findOneAndUpdate({discordId: req.params.discordId}, {astroneerUsername: req.body.astroneerUsername})
+        if (!user) {
+            res.status(404).send({success:false,message:"User not found"})
+        }
+        res.status(200).send({success: true, message: "Astroneer username set"})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId or astroneerUsername"})
+    }
+})
+userRoutes.get('/user/:discordId/astroneerusername', async (req:Request,res:Response) => {
+    if(req.params.discordId) {
+        const user = await userModel.findOne({discordId: req.params.discordId})
+        if (!user) {
+            res.status(404).send({success:false,message:"User not found"})
+        }
+        res.status(200).send({astroneerUsername : user?.astroneerUsername})
     } else {
         res.status(400).send({success:false, message: "Missing discordId"})
     }

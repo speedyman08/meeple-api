@@ -8,6 +8,7 @@ const userSchema = new Schema({
     lastWorkTime: String,
     whitelisted: Boolean,
     applied: Boolean,
+    astroneerUsername: String,
 })
 
 type User = InferSchemaType<typeof userSchema>
