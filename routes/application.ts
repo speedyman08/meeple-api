@@ -32,6 +32,18 @@ applicationRoutes.get('/application/:game/:discordId', async (req:Request,res:Re
         res.status(400).send({success:false, message: "Missing discordId"})
     }
 })
+applicationRoutes.get('/application/:game/:discordId/exists', async (req:Request,res:Response)=>{
+    if (req.params.discordId && req.params.game) {
+        const application = await applicationModel.findOne({discordId:req.params.discordId, game:req.params.game})
+        if (!application) {
+            res.status(400).send({exists:false})
+            return
+        }
+        res.send({exists:true})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId"})
+    }
+})
 applicationRoutes.get('/application/:game/:discordId/accept', async (req:Request,res:Response)=>{
     if (req.params.discordId && req.params.game) {
         const application = await applicationModel.findOneAndUpdate({discordId:req.params.discordId, game: req.params.game}, {accepted: true})
