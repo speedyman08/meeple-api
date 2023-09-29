@@ -14,7 +14,7 @@ userRoutes.post('/createuser',(req:Request,res:Response )=> {
             astroneerUsername: ""
         })
         user.save();
-        res.send({success: true, message: "User created"}).end()
+        res.send({success: true, message: "User created"})
     } else {
         res.status(400).send({success: false, message:"Missing values, are you sure you have username and discordId?"}).end();
     }
@@ -34,7 +34,7 @@ userRoutes.get('/user/:discordId', async (req:Request,res:Response)=>{
         }
         res.status(200).send(user).end();
     } else {
-        res.status(400).send({success:false, message:"Bad syntax"}).end();
+        res.status(400).send({success:false, message:"Bad syntax"})
     }
 })
 
@@ -47,7 +47,7 @@ userRoutes.put('/user/:discordId/balance', async(req:Request,res:Response)=>{
         }
         res.status(200).send({success:true, message:"Balance updated"})
     } else {
-        res.status(400).send({success:false, message:"Missing balance or discordId"}).end();
+        res.status(400).send({success:false, message:"Missing balance or discordId"})
     }
 })
 
@@ -55,10 +55,10 @@ userRoutes.get('/user/:discordId/balance', async(req:Request, res:Response) => {
     if (req.params.discordId) {
         const user = await userModel.findOne({discordId: req.params.discordId})
         if (!user) {
-            res.status(404).send({success:false, message:"Could not find discordId"}).end();
+            res.status(404).send({success:false, message:"Could not find discordId"})
             return;
         }
-        res.status(200).send({balance: user.balance}).end();
+        res.status(200).send({balance: user.balance})
     }
 })
 
@@ -72,7 +72,7 @@ userRoutes.delete('/deleteuser/:discordId', async(req:Request, res:Response)=>{
 
         res.status(200).send({success: true, message:"User deleted"})
     } else {
-        res.status(400).send({success:false, message:"Bad syntax"}).end();
+        res.status(400).send({success:false, message:"Bad syntax"})
     }
 })
 userRoutes.put('/user/:discordId/job', async(req:Request,res:Response)=>{
