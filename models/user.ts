@@ -6,9 +6,6 @@ const userSchema = new Schema({
     discordId: String,
     balance: Number,
     lastWorkTime: String,
-    whitelisted: Boolean,
-    applied: Boolean,
-    astroneerUsername: String,
 })
 
 type User = InferSchemaType<typeof userSchema>
