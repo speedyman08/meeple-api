@@ -36,7 +36,7 @@ applicationRoutes.get('/application/:game/:discordId/exists', async (req:Request
     if (req.params.discordId && req.params.game) {
         const application = await applicationModel.findOne({discordId:req.params.discordId, game:req.params.game})
         if (!application) {
-            res.status(400).send({exists:false})
+            res.status(404).send({exists:false})
             return
         }
         res.send({exists:true})
@@ -64,4 +64,16 @@ applicationRoutes.get('/application/:game', async (req:Request,res:Response)=>{
         res.status(400).send("Missing game")
     }
     
+})
+applicationRoutes.put('/application/:game/:discordId/username', async (req:Request,res:Response)=>{
+    if (req.params.discordId && req.params.game && req.body.username) {
+        const application = await applicationModel.findOneAndUpdate({discordId:req.params.discordId, game: req.params.game}, {username:req.body.username, accepted:false})
+        if (!application) {
+            res.status(400).send({success:false, message: "Could not find application"})
+            return
+        }
+        res.send({success:true, message: "Username changed"})
+    } else {
+        res.status(400).send({success:false, message: "Missing discordId"})
+    }
 })
